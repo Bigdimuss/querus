@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Ajouter une Nouvelle Page</h1>
+    <form id="pageForm">
+        <label for="title">Titre :</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="content">Contenu :</label>
+        <textarea id="content" name="content" required></textarea>
+        
+        <label for="likes">Likes :</label>
+        <input type="number" id="likes" name="likes" value="0">
+        
+        <label for="draft">Brouillon :</label>
+        <input type="checkbox" id="draft" name="is_draft">
+        
+        <input type="hidden" name="author_id" value="1"> <!-- Ajustez ceci selon l'utilisateur connecté -->
+        
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <script>
+        document.getElementById('pageForm').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {
+                title: formData.get('title'),
+                content: formData.get('content'),
+                likes: parseInt(formData.get('likes')) || 0,
+                is_draft: formData.get('is_draft') === 'on',
+                author_id: parseInt(formData.get('author_id')) // Assurez-vous que c'est un nombre
+            };
+
+            fetch('/pages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur lors de l\'ajout de la page');
+                return response.json();
+            })
+            .then(data => {
+                alert('Page ajoutée avec succès !');
+                // Rediriger ou mettre à jour l'interface utilisateur
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        };
+    </script>
+</body>
+</html>

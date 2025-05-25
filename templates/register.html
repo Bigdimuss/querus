@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enregistrement</title>
+</head>
+<body>
+    <h1>Créer un Compte</h1>
+    <form id="registerForm">
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        document.getElementById('registerForm').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {
+                username: formData.get('username'),
+                email: formData.get('email'),  // Ajout de l'email
+                password: formData.get('password')
+            };
+
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur lors de l\'enregistrement');
+                return response.json();
+            })
+            .then(data => {
+                alert('Inscription réussie !');
+                // Rediriger vers la page de connexion ou une autre page
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        };
+    </script>
+</body>
+</html>
+
+Actualiser
+
+Nouvel onglet
+

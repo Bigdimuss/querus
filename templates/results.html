@@ -1,0 +1,179 @@
+{{ if eq .index_page 1}}
+<div class="sidebar">
+    {{ if and (ne .wiki.Title "") (ne .wiki.Thumbnail "")}}
+    <section class="wikipedia-section">
+        <div class="w-content">
+            <div class="w-c-thumbmail-h">
+                <img class="w-c-thumbmail" src="{{ .wiki.Thumbnail }}" alt="{{ .wiki.Title }}">
+            </div>
+            <div class="w-c-block">
+                <h4 class="w-c-title"><a href="{{ .wiki.Url }}">{{ .wiki.Title }}</a></h4>
+                <p class="w-c-body">{{ truncate .wiki.Summary 650}} <a href="{{ .wiki.Url }}"> Lire plus sur wikipedia
+                    </a></p>
+
+                <!-- {{ if .wiki.Related}}
+                <p> 
+                    <strong> Related wiki result: </strong>
+                    {{ range .wiki.Related }}
+                    {{ . }} /
+                    {{ end }}
+                </p>
+                {{ end }}-->
+                 <i>Source wikipedia.org</i>
+            </div>
+        </div>
+    </section>
+    {{end}}
+</div>
+{{ end }}
+
+<section class="results">
+    {{ range .results }}
+    <article class="r-item">
+        <div class="r-header">
+            <img class="r-h-icon"
+                src="https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url={{.Url}}&size=64"
+                alt="{{ .Title }} favicon">
+            <h2 class="r-h-title"><a href="{{ .Url }}">{{ .Title }}</a></h2>
+        </div>
+        <p>{{ .Body }}</p>
+        <a class="r-link" href="{{ .Url }}">{{ .Url }}</a>
+        <div class="r-footer">
+            <h4 class="r-f-source"><a href="https://{{ .Source }}">{{ .Source }}</a></h4>
+            {{ RenderEngines .Engines }}
+        </div>
+        {{ range $k, $v := .Related_Results}}
+        <div class="related-result">
+            <h5 class="r-r-title"><a href="{{ $v.Url }}">{{ $v.Title }}</a></h5>
+            <p class="r-r-content">{{ $v.Body }}</p>
+            <h4 class="r-r-source">{{$v.Source}}</h4>
+            {{ RenderEngines $v.Engines }}
+        </div>
+        {{ end }}
+    </article>
+    {{ end }}
+</section>
+<script>
+    const results = [];
+    const items = document.querySelectorAll('.r-item'); // Pour les résultats web et news
+
+    items.forEach(item => {
+        const title = item.querySelector('.r-h-title a').innerText;
+        const url = item.querySelector('.r-h-title a').href;
+        const body = item.querySelector('p').innerText;
+        const source = item.querySelector('.r-f-source a').innerText;
+
+        // Récupérer les résultats liés
+        const relatedResults = [];
+        const relatedItems = item.querySelectorAll('.related-result');
+        relatedItems.forEach(related => {
+            const relatedTitle = related.querySelector('.r-r-title a').innerText;
+            const relatedUrl = related.querySelector('.r-r-title a').href;
+            const relatedBody = related.querySelector('.r-r-content').innerText;
+            const relatedSource = related.querySelector('.r-r-source').innerText;
+
+            relatedResults.push({ title: relatedTitle, url: relatedUrl, body: relatedBody, source: relatedSource });
+        });
+
+        results.push({ title, url, body, source, relatedResults });
+    });
+</script>
+<script>
+    document.getElementById('export-json').addEventListener('click', function () {
+
+        const json = JSON.stringify(results, null, 2);
+
+        const blob = new Blob([json], { type: 'application/json' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'results.json');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    function escapeXml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&apos;");
+    }// Exporter en XML
+    document.getElementById('export-xml').addEventListener('click', function () {
+        let xmlContent = '<results>\n';
+        results.forEach(result => {
+            xmlContent += `  <result>\n`;
+            xmlContent += `    <title>${escapeXml(result.title)}</title>\n`;
+            xmlContent += `    <url>${escapeXml(result.url)}</url>\n`;
+            xmlContent += `    <body>${escapeXml(result.body)}</body>\n`;
+            xmlContent += `    <source>${escapeXml(result.source)}</source>\n`;
+            xmlContent += `    <relatedResults>\n`;
+            result.relatedResults.forEach(rel => {
+                xmlContent += `      <related>\n`;
+                xmlContent += `        <title>${escapeXml(rel.title)}</title>\n`;
+                xmlContent += `        <url>${escapeXml(rel.url)}</url>\n`;
+                xmlContent += `        <body>${escapeXml(rel.body)}</body>\n`;
+                xmlContent += `        <source>${escapeXml(rel.source)}</source>\n`;
+                xmlContent += `      </related>\n`;
+            });
+            xmlContent += `    </relatedResults>\n`;
+            xmlContent += `  </result>\n`;
+        });
+        xmlContent += '</results>';
+
+        const blob = new Blob([xmlContent], { type: 'application/xml' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'results.xml');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // Exporter en YAML
+    document.getElementById('export-yaml').addEventListener('click', function () {
+        let yamlContent = '';
+        results.forEach(result => {
+            yamlContent += `- title: ${result.title}\n`;
+            yamlContent += `  url: ${result.url}\n`;
+            yamlContent += `  body: ${result.body}\n`;
+            yamlContent += `  source: ${result.source}\n`;
+            yamlContent += `  relatedResults:\n`;
+            result.relatedResults.forEach(rel => {
+                yamlContent += `    - title: ${rel.title}\n`;
+                yamlContent += `      url: ${rel.url}\n`;
+                yamlContent += `      body: ${rel.body}\n`;
+                yamlContent += `      source: ${rel.source}\n`;
+            });
+        });
+
+        const blob = new Blob([yamlContent], { type: 'text/yaml' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'results.yaml');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // Exporter en TXT
+    document.getElementById('export-txt').addEventListener('click', function () {
+        const txtContent = results.map(result => {
+            const related = result.relatedResults.map(rel => `Title: ${rel.title} | Url: ${rel.url} | Body: ${rel.body}`).join(' || ');
+            return `Titile: ${result.title} | Url: ${result.url} | Body: ${result.body} Source: ${result.source} | Related: [${related}]`;
+        }).join('\n');
+
+        const blob = new Blob([txtContent], { type: 'text/plain' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'results.txt');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+</script>

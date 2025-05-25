@@ -1,0 +1,124 @@
+<section class="image-results">
+  <div class="image-container">
+    {{ range .results}}
+    <div class="image-wrapper">
+      <img class="image-item" src="{{ .Img }}" alt="{{ .Title }}" onerror="this.parentNode.remove()">
+      <div class="overlay" onclick="openModal('{{ .Img }}', '{{ .Title }}', '{{ .Url }}', '{{ .Body }}')">
+        <i class="fa fa-search-plus"></i>
+        <a href="{{ .Url }}">
+          <h4 class="image_title">{{ .Title }}</h4>
+        </a>
+        <h4 class="dimensions">{{ .Width }} x {{ .Height }}</h4>
+        <h6>{{ .Engines }}</h6>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  <script>
+    const results = [];
+    const items = document.querySelectorAll('.image-wrapper'); // Pour les résultats images
+    items.forEach(item => {
+      const title = item.querySelector('.image_title').innerText;
+      const url = item.querySelector('a').href;
+      const image = item.querySelector('img').src;
+      const dimensions = item.querySelector('.dimensions').innerText;
+      results.push({ title, url, image, dimensions });
+    });
+
+    document.getElementById('export-json').addEventListener('click', function () {
+      const json = JSON.stringify(results, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'results.json');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    function escapeXml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+    }
+
+    document.getElementById('export-xml').addEventListener('click', function () {
+      let xmlContent = '<results>\n';
+      results.forEach(result => {
+        xmlContent += `  <result>\n`;
+        xmlContent += `    <title>${escapeXml(result.title)}</title>\n`;
+        xmlContent += `    <url>${escapeXml(result.url)}</url>\n`;
+        xmlContent += `    <src>${escapeXml(result.image)}</src>\n`;
+        xmlContent += `    <dimensions>${escapeXml(result.dimensions)}</dimensions>\n`;
+        xmlContent += `  </result>\n`;
+      });
+      xmlContent += '</results>';
+      const blob = new Blob([xmlContent], { type: 'application/xml' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'results.xml');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    document.getElementById('export-yaml').addEventListener('click', function () {
+      let yamlContent = '';
+      results.forEach(result => {
+        yamlContent += `- title: ${result.title}\n`;
+        yamlContent += `  url: ${result.url}\n`;
+        yamlContent += `  image: ${result.image}\n`;
+        yamlContent += `  dimensions: ${result.dimensions}\n`;
+      });
+      const blob = new Blob([yamlContent], { type: 'text/yaml' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'results.yaml');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    document.getElementById('export-txt').addEventListener('click', function () {
+      const txtContent = results.map(result => {
+        return `Title: ${result.title} | Url: ${result.url} | Image: ${result.image} | Dimension: ${result.dimensions}`;
+      }).join('\n');
+      const blob = new Blob([txtContent], { type: 'text/plain' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'results.txt');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  </script>
+</section>
+
+<div id="myModal" class="modal">
+  <span class="close-button" onclick="closeModal()">&times;</span>
+  <img class="modal-content" id="modal-image">
+  <div id="caption"></div>
+</div>
+
+<script>
+  function openModal(imgSrc, title, url, body) {
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("modal-image");
+    var captionText = document.getElementById("caption");
+    modal.style.display = "block";
+    modalImg.src = imgSrc;
+    captionText.innerHTML = "<h2 class='img-title'>" + "<a href=" + url + ">" + title + "</a><h2>"
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+</script>

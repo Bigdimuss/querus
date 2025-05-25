@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Page d'accueil</title>
+  <link rel="stylesheet" href="/styles/initialize.min.css">
+  <link rel="stylesheet" href="/static/css/mystyle.css">
+</head>
+
+<body>
+  <header id="search-header">
+    <div class="header-container">
+      <a href="/"><img src="/static/elements/Logo.png" alt="Querus-logo" class="logo-header"></a>
+      <div id="search">
+        {{ with . }}
+        {{ template "entry_template.html" .}}
+        {{ else }}
+        {{ template "entry_template.html"}}
+        {{ end }}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="search-header">
+      <p class="en-tete">
+        <i>{{ .number }} résultats pour : {{ .query }} - Temps d'exécution : {{ .time }}</i>
+      </p>
+      <div class="export-block">
+      <!-- Boutons pour l'exportation -->
+      <button id="export-json">Exporter en JSON</button>
+      <button id="export-xml">Exporter en XML</button>
+      <button id="export-yaml">Exporter en YAML</button>
+      <button id="export-txt">Exporter en TXT</button>
+      </div>
+    </div>
+    <div class="main">
+
+      {{ if or (eq .type "web") (eq .type "news")}}
+      {{ template "results.html" .}}
+      {{ end }}
+      {{ if eq .type "images"}}
+      {{ template "images_results.html" .}}
+      {{ end }}
+    </div>
+    <div id="result-footer">
+      {{ if gt .previous_page_nb 0 }}
+      <a href="{{.previous_page_url}}"> < Precedente </a>
+      {{ end }}
+      <a href="#">- {{.index_page }} - </a>
+      <a href="{{.next_page_url}}">Suivante ></a>
+    </div>
+  </main>
+  <footer>
+    <h3>Statistics</h3>
+    <table id="stats-block">
+      {{ range $engine, $delay := .enginesdelays }}
+      <tr>
+        <td>{{ $engine }}</td>
+        <td>{{ printf "%.3f" $delay }} s</td>
+      </tr>
+      {{ end }}
+    </table>
+  </footer>
+
+
+</body>
+
+</html>

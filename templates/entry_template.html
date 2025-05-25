@@ -1,0 +1,406 @@
+<form action="/search" method="get" id="base_form">
+    <div id="search-flex">
+        <div class="source-options">
+
+            <input type="radio" name="type" value="web" id="web" checked>
+            <label class="choice" for="web">Web</label>
+            <input type="radio" name="type" value="news" id="news">
+            <label class="choice" for="news">News</label>
+            <input type="radio" name="type" value="images" id="images">
+            <label class="choice" for="images">Images</label>
+            <input type="radio" name="type" value="videos" id="videos">
+            <label class="choice" for="videos">Videos</label>
+        </div>
+
+        <div class="search_form">
+            <input type="text" id="q" class="text_form" name="q" placeholder="Rechercher..." value="{{.query}}" />
+            <input type="submit" value="Rechercher" class="send_form">
+        </div>
+    </div>
+
+    <div id="options">
+
+        <input type="checkbox" value="options" id="options-toggle" class="hidden-checkbox">
+        <label class="options_label" for="options-toggle">Options</label>
+
+        <div id="full-block" class="hidden">
+            <div id="options-menu">
+                <div id="scrollable">
+                    <div id="base_option">
+                        <h3> Options </h3>
+                        <h4> Paramètres de recherche</h4>
+                        <div class="base_options">
+                            <div class="switch-block">
+                                <label class="label-text">Language :</label>
+                                <div class="custom-select">
+                                    <select name="lang" id="lang-select">
+                                        <option value="fr-FR" selected="selected">Français</option>
+                                        <option value="en-EN">Anglais</option>
+                                        <option value="es-ES">Espagnol</option>
+                                        <option value="it-IT">Italien</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="switch-block">
+                                <label class="label-text">Max result by engine :</label>
+                                <div class="custom-select">
+                                    <select name="max_result" id="max-result-select">
+                                        <option value="10" selected="selected">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="switch-block">
+                                <label class="label-text">Safe search :</label>
+                                <div class="custom-select">
+                                    <select name="safe" id="safe-select">
+                                        <option value="off">Off</option>
+                                        <option value="moderate" selected="selected">Moderate</option>
+                                        <option value="strict">Strict</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="engine-options">
+                            <h4>Moteur(s) interrogé(s) :</h4>
+                            <div class="switch-block">
+                                <span class="label-text">AllTheInternet</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="AllTheInternet" id="AllTheInternet"
+                                        class="toggle-checkbox" checked>
+                                    <label for="AllTheInternet" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+                                <span class="label-text">DuckDuckGo</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="DuckDuckGo" id="DuckDuckGo"
+                                        class="toggle-checkbox" checked>
+                                    <label for="DuckDuckGo" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+                                <span class="label-text">Qwant</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="Qwant" id="Qwant"
+                                        class="toggle-checkbox" checked>
+                                    <label for="Qwant" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+                                <span class="label-text">Brave</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="Brave" id="Brave"
+                                        class="toggle-checkbox" checked>
+                                    <label for="Brave" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+
+                                <span class="label-text">You</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="You" id="You" class="toggle-checkbox"
+                                        checked>
+                                    <label for="You" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+
+                                <span class="label-text">Yep</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="Yep" id="Yep" class="toggle-checkbox"
+                                        checked>
+                                    <label for="Yep" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-block">
+                                <span class="label-text">Mojeek</span> <!-- Label écrit -->
+                                <div class="switch">
+                                    <input type="checkbox" name="engines" value="Mojeek" id="Mojeek"
+                                        class="toggle-checkbox" checked>
+                                    <label for="Mojeek" class="toggle-label">
+                                        <span class="toggle-inner"></span>
+                                        <span class="toggle-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>Regroup results</h4>
+                        <div class="switch-block">
+
+                            <span class="label-text">Don't regroup same sources</span> <!-- Label écrit -->
+                            <div class="switch">
+                                <input type="checkbox" name="related" value="false" id="related-state"
+                                    class="toggle-checkbox">
+                                <label for="related-state" class="toggle-label">
+                                    <span class="toggle-inner"></span>
+                                    <span class="toggle-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="advanced_search">
+                        <h3> Recherche avancée </h3>
+                        <div class="item_search">
+                            <label for="q">Query :</label>
+                            <div class="search_form">
+                                <input type="text" id="advanced_q" class="text_form" name="q"
+                                    placeholder="Rechercher..." value="{{.query}}" />
+                            </div>
+                        </div>
+                        <div class="advanced_block">
+                            <h4> Par terme(s) :</h4>
+                            <p>Cette rubrique permet d'inclure des termes precis dans la requete ou au contraire
+                                d'exclures
+                                des termes.</p>
+                            <div class="item_search">
+                                <label for="includeTermInputField">Doit contenir ce(s) terme(s):</label>
+                                <div class="search_form">
+                                    <input type="text" id="includeTermInputField" class="text_form" name="include_terms"
+                                        placeholder="Termes a inclure ..." value="" />
+                                    <button type="button" id="includeTermAddButton" class="add_button">+</button>
+                                </div>
+                                <div id="includeTermErrorMessage" class="error"></div>
+                                <div id="includeTermContainer" class="item_container"></div>
+                            </div>
+                            <div class="item_search">
+                                <label for="excludeTermInputField">Terme(s) exclu(s):</label>
+                                <div class="search_form">
+                                    <input type="text" id="excludeTermInputField" class="text_form" name="exclude_terms"
+                                        placeholder="Termes exclus ..." value="" />
+                                    <button type="button" id="excludeTermAddButton" class="add_button">+</button>
+                                </div>
+                                <div id="excludeTermErrorMessage" class="error"></div>
+                                <div id="excludeTermContainer" class="item_container"></div>
+                            </div>
+                        </div>
+                        <div class="advanced_block">
+                            <h4> Par nom(s) de domaine(s) :</h4>
+                            <p> Cette rubrique permet de concentrer la recherche sur certains nom de domaine ou au
+                                contraire
+                                d'exclure des noms de domaines</p>
+                            <div class="item_search">
+                                <label for="includeDomainForm">Rechercher par domaine(s) spécifique(s):</label>
+                                <div class="search_form">
+                                    <input type="text" id="includeDomainInputField" class="text_form"
+                                        name="include_domains" placeholder="Domaines inclus ..." value="" />
+                                    <button type="button" id="includeDomainAddButton" class="add_button">+</button>
+                                </div>
+                                <div id="includeDomainErrorMessage" class="error"></div>
+                                <div id="includeDomainContainer" class="item_container"></div>
+                            </div>
+                            <div class="item_search">
+                                <label for="excludeDomainInputField">Domaine(s) exclu(s):</label>
+                                <div class="search_form">
+                                    <input type="text" id="excludeDomainInputField" class="text_form"
+                                        name="exclude_domains" placeholder="Domaines exclus ..." value="" />
+                                    <button type="button" id="excludeDomainAddButton" class="add_button">+</button>
+                                </div>
+                                <div id="excludeDomainErrorMessage" class="error"></div>
+                                <div id="excludeDomainContainer" class="item_container"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Rechercher" id="search-btn">
+
+        </div>
+    </div>
+</form>
+
+<script>
+    // Votre code JavaScript ici
+    // Récupérer l'URL actuelle
+    const currentURL = new URL(window.location.href);
+
+    // Récupérer les paramètres de l'URL
+    const urlParams = new URLSearchParams(currentURL.search);
+
+    // Sélectionner les éléments du formulaire
+    const typeRadios = document.querySelectorAll('input[name="type"]');
+    const langSelect = document.getElementById('lang-select');
+    const maxResultSelect = document.getElementById('max-result-select');
+    const safeSelect = document.getElementById('safe-select');
+    const searchInput = document.getElementById('q');
+    const advancedSearchInput = document.getElementById('advanced_q');
+    const relatedState = document.getElementById('related-state')
+
+    // Cocher/sélectionner les éléments en fonction des paramètres de l'URL
+    typeRadios.forEach(radio => {
+        if (radio.value === urlParams.get('type')) {
+            radio.checked = true;
+        }
+    });
+
+    relatedState.checked = urlParams.get('related') === 'false';
+
+    langSelect.value = urlParams.get('lang') || 'fr-FR';
+    maxResultSelect.value = urlParams.get('max_result') || '10';
+    safeSelect.value = urlParams.get('safe') || 'moderate';
+    searchInput.value = urlParams.get('q') || '';
+    advancedSearchInput.value = urlParams.get('q') || '';
+
+    /* Synchronise les Input Query - > Search et Advanced */
+    searchInput.addEventListener('input', () => {
+        advancedSearchInput.value = searchInput.value;
+    });
+
+    advancedSearchInput.addEventListener('input', () => {
+        searchInput.value = advancedSearchInput.value;
+    });
+
+</script>
+
+<script> // Fonction pour ajouter un terme ou un domaine
+
+    function addItem(container, inputField, errorMessage, className, itemName) {
+        const value = inputField.value.trim();
+        errorMessage.textContent = '';
+
+        if (value) {
+            // Vérifier l'existence uniquement dans le conteneur actuel
+            const existingItem = Array.from(container.children).some(item => item.getAttribute('data-value') === value);
+
+            if (!existingItem) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = className;
+                itemDiv.setAttribute('data-value', value);
+                itemDiv.textContent = value;
+
+                const removeButton = document.createElement('span');
+                removeButton.textContent = '✖';
+                removeButton.className = 'remove-button';
+                removeButton.addEventListener('click', () => {
+                    itemDiv.remove();
+                });
+
+                itemDiv.appendChild(removeButton);
+                container.appendChild(itemDiv);
+                inputField.value = '';
+            } else {
+                errorMessage.textContent = `${itemName} déjà ajouté dans ce champ`;
+            }
+        }
+    }
+    // Événements pour les boutons d'ajout
+
+    document.getElementById('includeTermAddButton').addEventListener('click', () => {
+
+        addItem(
+
+            document.getElementById('includeTermContainer'),
+
+            document.getElementById('includeTermInputField'),
+
+            document.getElementById('includeTermErrorMessage'),
+
+            'item include-term',
+
+            'Terme'
+
+        );
+
+    });
+
+    document.getElementById('includeDomainAddButton').addEventListener('click', () => {
+
+        addItem(
+
+            document.getElementById('includeDomainContainer'),
+
+            document.getElementById('includeDomainInputField'),
+
+            document.getElementById('includeDomainErrorMessage'),
+
+            'item include-domain',
+
+            'Domaine'
+
+        );
+
+    });
+
+    document.getElementById('excludeTermAddButton').addEventListener('click', () => {
+
+        addItem(
+
+            document.getElementById('excludeTermContainer'),
+            document.getElementById('excludeTermInputField'),
+            document.getElementById('excludeTermErrorMessage'),
+
+            'item exclude-term',
+
+            'Terme exclu'
+
+        );
+
+    });
+
+    document.getElementById('excludeDomainAddButton').addEventListener('click', () => {
+
+        addItem(
+
+            document.getElementById('excludeDomainContainer'),
+
+            document.getElementById('excludeDomainInputField'),
+
+            document.getElementById('excludeDomainErrorMessage'),
+
+            'item exclude-domain',
+
+            'Domaine exclu'
+
+        );
+
+    });
+
+
+    // Soumission du formulaire
+    document.getElementById('base_form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const params = new URLSearchParams(new FormData(this));
+
+        const excludeTerms = Array.from(document.getElementById('excludeTermContainer').children)
+            .map(item => item.getAttribute('data-value'));
+        const excludeDomains = Array.from(document.getElementById('excludeDomainContainer').children)
+            .map(item => item.getAttribute('data-value'));
+        const includeDomains = Array.from(document.getElementById('includeDomainContainer').children)
+            .map(item => item.getAttribute('data-value'));
+        const includeTerms = Array.from(document.getElementById('includeTermContainer').children)
+            .map(item => item.getAttribute('data-value'));
+
+        excludeTerms.forEach(term => params.append('exclude_terms', term));
+        excludeDomains.forEach(domain => params.append('exclude_domains', domain));
+        includeDomains.forEach(domain => params.append('include_domains', domain));
+        includeTerms.forEach(term => params.append('include_terms', term));
+
+        window.location.href = this.action + '?' + params.toString();
+    });
+</script>

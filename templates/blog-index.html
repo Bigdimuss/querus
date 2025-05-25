@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page d'accueil Blog</title>
+    <link rel="stylesheet" href="styles/initialize.min.css">
+    <link rel="stylesheet" href="static/css/mystyle.css">
+
+</head>
+<body>
+    <header id="header">
+        <div class="header-container">
+        <a href="/"><img src="static/elements/Logo.png" alt="Querus-logo" class="logo-header"></a>
+        </div>
+    </header>
+<main>
+    <h1>BLOG INDEX</h1>
+    {{ range .articles }}
+    {{ . }}
+    {{ end }}
+</main>
+</body>
+</html>
