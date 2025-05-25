@@ -100,9 +100,22 @@ func (mojeek *Mojeek) processWebSearch(resultString string, page int, searchType
 	}
 	for _, result := range titles {
 		if searchType == "web" {
-			title := result.Find("h2").FullText()
-			content := result.Find("p", "class", "s").FullText()
-			url := result.Find("a", "class", "title").Attrs()["href"]
+			titleBlock := result.Find("h2")
+			if titleBlock.Error != nil {
+				continue
+			}
+			title := titleBlock.FullText()
+
+			contentBlock := result.Find("p", "class", "s")
+			if contentBlock.Error != nil {
+				continue
+			}
+			content := contentBlock.FullText()
+			urlBlock := result.Find("a", "class", "title")
+			if urlBlock.Error != nil {
+				continue
+			}
+			url := urlBlock.Attrs()["href"]
 			if (title != "") && (content != "") && (url != "") {
 				resultItem := engine.Item{
 					Title:    title,
